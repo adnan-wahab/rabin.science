@@ -1,0 +1,15 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    background: transparent;
+}
+canvas {
+    position: absolute;
+    outline: none;
+    top: 0;
+    left: 0;
+}
+.noScroll{
+    overflow: hidden !important;   
+}
