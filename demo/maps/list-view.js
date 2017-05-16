@@ -7,17 +7,16 @@ const layers = [
   'brightkite'
 ]
 
-
 const exposition = {
     'trees': 'https://www.kaggle.com/keyshin/nyc-trees-a-first-look',
     'crimes': 'https://data.world/data-society/nyc-crime-data',
     'gdelt':'http://www.gdeltproject.org/',
-    'brightkite': 'A defunct social network https://snap.stanford.edu/data/loc-brightkite.html'
+    'brightkite': 'https://snap.stanford.edu/data/loc-brightkite.html'
 }
 
 const listItems = layers.map((title, i) =>
     <li key={title}>
-    <a href={exposition[title]}>{title}</a>
+    <a href={exposition[title]} target="_blank">{title}</a>
     </li>
 );
 
