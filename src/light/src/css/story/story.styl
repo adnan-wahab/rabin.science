@@ -572,8 +572,8 @@ canvas {
 
 .label-container {
     position: absolute;
-    top: 0px;
-    left: 20px;
+    top: 20px;
+    left: 900px;
 }
 
 
@@ -581,16 +581,16 @@ canvas {
     position: relative;
 }
 
-.play-pause-webgl{
+.play-pause-webgl {
     cursor: pointer;
-    position: absolute;
+    // position: absolute;
     padding: 5px 10px;
     border-radius: 5px;
     border: solid 1px hsl(0, 0%, 80%);
     color: hsl(0, 0%, 20%);
     background: hsl(0, 0%, 100%);
     bottom: 20px;
-    left: 20px;
+    left: 900px;
     line-height: 50%;
 }
 
@@ -606,12 +606,14 @@ circle.pinhole.source{
 .handle{
     cursor: pointer;
 }
+
 .handle .nob{
     fill: white;
     opacity: 1;
     stroke: rgba(255, 255, 255, 0.5);
 }
-.handle circle.shadow{
+
+.handle circle.shadow {
     fill: none;
     stroke: white;
     pointer-events: none;

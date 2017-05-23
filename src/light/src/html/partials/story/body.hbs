@@ -3,22 +3,20 @@
     Rendering is interdisciplinary in nature, and combines ideas from physics, math and art.</p>
 
 <div class="animation">
-    <canvas  class="webgl"
-             width="960px"
-             height='500px'
-    >
+    <canvas class="webgl"
+            width="960px"
+            height="500px">
     </canvas>
 
-<button class="play-pause-webgl">▶ Play</button>
     <div class="label-container">
         <label> roughess <input class="Roughness"type="range"></label>
         <label>metalness <input class="Metallic" type="range"></label>
-        <label>albedo <input class="Albedo"type="color"></label>
+        <label>albedo <input class="Albedo"type="color" value="#ffffff"></label>
+        <button class="play-pause-webgl">▶ Play</button>
     </div>
 
 
-    <p>
-    </p>
+</div>
 
 <p>Visible light is an electromagnetic, tranverse wave.</p>
 
@@ -75,76 +73,74 @@
     <!-- 400-700 nanometers -->
     <!-- most light waves contain many different frequencies in it. -->
 
-<p>Try changing the roughness of the cube above to affect the glossiness of the reflected light rays below.</p>
+    <p>Try changing the roughness of the cube above to affect the glossiness of the reflected light rays below.</p>
 
-<ul>
-    polarizes them. stretches the positive and negative charges
-    when an EM wave hits an atom,
-    In a gas,
-    The combination of dipole interactions is too complex to accurately simulate
-    WAVE optics
-    we treat mediums as homogenous.
-    IoR - speed of light through medium and how much light
-    is absorbed by medium<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
-    Glossmap
-    absorption determines the color
-    if it is colored, it absorbs some wave lengths more than others
-    scattering determines how cloudy the medium is
-    Surfaces
-    When modeling a surface to be rendered, we care only about a specific number of properties
-    Roughness or nanogeometry, or irregularities in the surface of the material that are smaller than the wave of light. This causes Diffraction.
-    The Huygens-Fresnel Principles
-    Plane wave -> spherical wave until it hits an optical, light bends around the corner
-    soft shadows
-    If the surface is optically smooth, diffraction results in reflectance.
-    ACTION : polish the material
-    the smaller the nano geometry, or the height of the bumps,
-    Ray Optics
-    statistical aggregate
-    Micro geometry -
-    light has a very different direction
-    light spreads out in very wide cone
-    we don’t model the micro geometry  explicitly
-    we view it statistically
-    the rougher the surface, the wider the cone
-    reflected light
-    reflectance is the process by which a ray of light interacts with a surface.
-    when light bounces off a surface, it's properties change in 3 ways
-    a bdrf must be linear, reciprocal, conserve energy, isotropic??
-    Properties of light
-    <li>Spectra and Color</li>
-    <li>Polarization</li>
-    <li>Directional distribution</li>
-    the behavior of refracted light depends on whether it is a metal.
-    Metal’s immediately absorb all refracted light because there is a sea of electrons on the surface of them.
-</ul>
+    <ul>
+        polarizes them. stretches the positive and negative charges
+        when an EM wave hits an atom,
+        In a gas,
+        The combination of dipole interactions is too complex to accurately simulate
+        WAVE optics
+        we treat mediums as homogenous.
+        IoR - speed of light through medium and how much light
+        is absorbed by medium<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>
+        Glossmap
+        absorption determines the color
+        if it is colored, it absorbs some wave lengths more than others
+        scattering determines how cloudy the medium is
+        Surfaces
+        When modeling a surface to be rendered, we care only about a specific number of properties
+        Roughness or nanogeometry, or irregularities in the surface of the material that are smaller than the wave of light. This causes Diffraction.
+        The Huygens-Fresnel Principles
+        Plane wave -> spherical wave until it hits an optical, light bends around the corner
+        soft shadows
+        If the surface is optically smooth, diffraction results in reflectance.
+        ACTION : polish the material
+        the smaller the nano geometry, or the height of the bumps,
+        Ray Optics
+        statistical aggregate
+        Micro geometry -
+        light has a very different direction
+        light spreads out in very wide cone
+        we don’t model the micro geometry  explicitly
+        we view it statistically
+        the rougher the surface, the wider the cone
+        reflected light
+        reflectance is the process by which a ray of light interacts with a surface.
+        when light bounces off a surface, it's properties change in 3 ways
+        a bdrf must be linear, reciprocal, conserve energy, isotropic??
+        Properties of light
+        <li>Spectra and Color</li>
+        <li>Polarization</li>
+        <li>Directional distribution</li>
+        the behavior of refracted light depends on whether it is a metal.
+        Metal’s immediately absorb all refracted light because there is a sea of electrons on the surface of them.
+    </ul>
 
-<p>nonmetals behave like cups of liquid
-    the refracted light is scattered, absorbed or both.
-</p>
-<p>
-    
-    <img src="/images/light/diffuse1.png">
-    <img src="/images/light/diffuse2.png">
-    <img src="/images/light/diffuse2.png">
-</p>
+    <p>nonmetals behave like cups of liquid
+        the refracted light is scattered, absorbed or both.
+    </p>
+    <p>
+        <img src="/assets/diffuse1.png">
+        <img src="/assets/diffuse2.png">
+        <img src="/assets/diffuse3.png">
+    </p>
 
-<p>if it’s transparent like glass, it will keep going all the way through.
-    but usually it will be selectively be absorbed some percentage of the time.
-    and the light that enters gets scattered at different angles
-    if the pixel size size
-    surface reflection term is specular
-    refraction, absorption, scattering and more refraction, is diffuse
-    quantify light as a number
-    Radiance measures the intensity of light along a single ray
-    spectral: rub
-    bidirectional reflectance distribution function
-    a function of l, v
-    Lo(V) = integral of omega
-    outgoing radiance = integral of incoming radiance TIMES
-    times bdrf times cosine factor
-    weighted average over incoming directions</p>
-
+    <p>if it’s transparent like glass, it will keep going all the way through.
+        but usually it will be selectively be absorbed some percentage of the time.
+        and the light that enters gets scattered at different angles
+        if the pixel size size
+        surface reflection term is specular
+        refraction, absorption, scattering and more refraction, is diffuse
+        quantify light as a number
+        Radiance measures the intensity of light along a single ray
+        spectral: rub
+        bidirectional reflectance distribution function
+        a function of l, v
+        Lo(V) = integral of omega
+        outgoing radiance = integral of incoming radiance TIMES
+        times bdrf times cosine factor
+        weighted average over incoming directions</p>
 
 
 
@@ -152,22 +148,23 @@
 
 
 
-<h1 id="subsurface-scattering-todo">Subsurface Scattering - TODO</h1>
 
-<h1 id="camera">Camera</h1>
+    <h1 id="subsurface-scattering-todo">Subsurface Scattering - TODO</h1>
 
-<p>The essential property of a lens is that it bends radiation, to converge
-    upon a focus point.</p>
+    <h1 id="camera">Camera</h1>
 
-
-
+    <p>The essential property of a lens is that it bends radiation, to converge
+        upon a focus point.</p>
 
 
-<ul>
-    <li>Field of view = Film size, focal length</li>
-    <li>Depth of feld = Aperture, focal length</li>
-    <li>Exposure = Film speed, aperture, shutter</li>
-    <li>Motion blur = Shutter speed</li>
-</ul>
+
+
+
+    <ul>
+        <li>Field of view = Film size, focal length</li>
+        <li>Depth of feld = Aperture, focal length</li>
+        <li>Exposure = Film speed, aperture, shutter</li>
+        <li>Motion blur = Shutter speed</li>
+    </ul>
 
 
