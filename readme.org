@@ -1,0 +1,8 @@
+1. Tutorials and solving “open exposition problems.”
+2. Creating a new way of looking at something, reframing it or creating a new perspective.
+3. Clarifying things we formally know but don’t understand.
+4. Visualizations, interfaces, or explorable explanations.
+5. Communicating novel results extremely well.
+6. Filtering and summarizing research.
+
+
