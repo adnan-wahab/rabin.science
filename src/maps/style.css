@@ -9,13 +9,6 @@ body {margin: 0; padding: 0; overflow: hidden;}
 }
 
 
-.legend {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    z-index: 100;
-    background: rgba(100, 100, 100, .5);
-}
 
 .legend a {
     text-decoration: none;
@@ -58,6 +51,7 @@ a:hover {
     width: 240px;
     background: rgba(40,40,40,0.8);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 hr {

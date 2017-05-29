@@ -5,113 +5,99 @@ import * as d3 from 'd3';
 import _ from 'underscore';
 import Overlay from './overlay.js';
 
-import {text as request} from 'd3-request';
 import {csv as requestCSV} from 'd3-request';
 import {json as requestJSON} from 'd3-request';
 
 // Set your mapbox token here
 var MAPBOX_TOKEN = 'pk.eyJ1IjoiYXdhaGFiIiwiYSI6ImNpenExZHF0ZTAxMXYzMm40cWRxZXY1d3IifQ.TdYuekJQSG1eh6dDpywTxQ';
 
+
+
 let done = (results) => {
-  let beanList = results[0].stationBeanList
-  let stations = {}
-  for (let bean of beanList) stations[bean.id] = bean
+  let data = {}
 
-  let shadow= [ 40.75668720603179, -73.98257732391357 ]
+  data.trees = results[0]
+  data.crimes = results[1]
 
-  let trips = results[1].map((row, n) => {
-    let source = stations[row['start station id']],
-        target = stations[row['end station id']]
+  processors.trees(data)
+  processors.crimes(data)
 
-        //return [shit[n].start, shit[n].end]
-
-    return [
-      [source ? source.longitude : shadow[1],
-       source ? source.latitude : shadow[0]
-      ],
-      [target ? target.longitude : shadow[1],
-       target ? target.latitude : shadow[0]
-      ]
-    ]
-  })
-
-  return {
-    stations: stations,
-    bike_trips: trips
-  }
+  return data
 }
-
 function loadData() {
-  return Promise.all([loadStations(), loadTrips()]).then(done);
+  return Promise.all([load('/data/trees/trees.csv'),
+                      load('/data/crimes/crimes.csv')
+                     ])
+    .then(done);
 }
 
 
-let loadStations = () => {
+let load = (url) => {
   return new Promise((resolve, reject) => {
-    requestJSON('data/citi_bike/stations.json')
+    let fetch = (url.split('.')[1] == 'json' ? requestJSON : requestCSV)
+
+    fetch(url)
       .on('load', resolve)
       .on('error', reject)
       .get();
   });
 }
-let loadTrips = () => {
-  return new Promise((resolve, reject) => {
-    requestCSV('data/citi_bike/trips.csv')
-      .on('load', resolve)
-      .on('error', reject)
-      .get();
-  });
-}
-
-// let requestWrap = (file, processor, self) => {
-//   requestCSV(`data/${file}/${file}.csv`, (error, response) => {
-//     let result = {};
-//     result[file] = processor(response)
-
-//     if (error)
-//       throw new Error(error)
-//     else
-//       self.setState((prev) => _.extend(prev.data, result))
-//   })
-// }
-
-
 
 
 let processors = {
-  trees: (response) => {
+  trees: (data) => {
     var cat = {
       Good: 1,
       Fair: 2,
       Poor: 3
     }
-    return response.map((d) => [(+ d.longitude),
-                                (+ d.latitude),
-                                0,
-                                cat[d.health]
-                               ]
-                       );
-  }
-  ,
-  crimes: (response) => {
+
+    data.trees = data.trees.map((d) => [(+ d.longitude),
+                                             (+ d.latitude),
+                                             0,
+                                             cat[d.health]
+                                            ]
+                                    );
+  },
+  crimes: (data) => {
     var cat = {
       MISDEMEANOR: 1,
       VIOLATION: 2,
       FELONY: 3
     }
-
-    return response.map((d) => [(+ d.Longitude),
+    data.crimes = data.crimes.map((d) => [(+ d.Longitude),
                                 (+ d.Latitude),
                                 0,
                                 cat[d.LAW_CAT_CD]
                                ]
                        );
   },
-  bikes: (response) => {
-    return response.map((d) => [(+ d.Longitude),
-                                (+ d.Latitude)
-                               ]
-                       );
+  bike_stations: (results) => {
+    let beanList = results[0].bike_stations
+    let stations = {}
+    for (let bean of beanList) stations[bean.id] = bean
+
+    result.bike_stations = stations
+  },
+  bike_trips: (results) => {
+    let shadow= [ 40.75668720603179, -73.98257732391357 ]
+
+    let trips = results.bike_trips.map((row, n) => {
+      let source = results.stations[row['start station id']],
+          target = resultsstations[row['end station id']]
+
+      return [
+        [source ? source.longitude : shadow[1],
+         source ? source.latitude : shadow[0]
+        ],
+        [target ? target.longitude : shadow[1],
+         target ? target.latitude : shadow[0]
+        ]
+      ]
+    })
+
+
+    data.bike_trips = trips
   }
 }
 
@@ -135,7 +121,8 @@ class Map extends Component {
     let view = this
 
     loadData().then((data) => {
-      this.setState({data})
+      console.log(data)
+      this.setState({data: data})
     })
   }
 

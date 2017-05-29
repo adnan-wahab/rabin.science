@@ -25,8 +25,7 @@ let colorSchemes = {
     },
 }
 
-
-let plot = (data, name) => {
+let scatter = (data, name) => {
     return new ScatterplotLayer({
         id: name,
         getPosition: (d) => d.slice(0,3),
@@ -56,15 +55,16 @@ let lines = (data) => {
 
 export default class Overlay extends Component {
     render() {
-        const {viewport, width, height, data} = this.props;
-        if (! data) return null;
-        /* const layers=  [
-         *     plot(data, 'trees'), plot(data, 'crimes')
-         * ];*/
+      const {viewport, width, height, data} = this.props;
+      if (! data) return null;
 
-        const layers = [
-            lines(data.bike_trips)
-        ]
+      const layers=  [
+        scatter(data, 'trees'), scatter(data, 'crimes')
+      ];
+
+        // const layers = [
+        //     lines(data.bike_trips)
+        // ]
 
         return (
             <DeckGL {...viewport} layers={ layers } />
