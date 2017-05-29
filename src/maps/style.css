@@ -1,6 +1,27 @@
-
 body {margin: 0; padding: 0; overflow: hidden;}
+
+.overlays {
+    isolation: 'isolate';
+}
 
 .overlays canvas {
     mix-blend-mode: multiply;
+}
+
+
+.legend {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    z-index: 100;
+    background: rgba(100, 100, 100, .5);
+}
+
+.legend a {
+    text-decoration: none;
+    color: white;
+}
+
+.legend ul {
+    list-style: none;
 }

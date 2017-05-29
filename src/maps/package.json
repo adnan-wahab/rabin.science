@@ -1,10 +1,11 @@
 {
   "scripts": {
-    "start": "budo app.js:bundle.js --live -- -t babelify",
-    "build": "browserify ./app.js -o bundle.js -t babelify --debug"
+    "start": "budo ./src/app.js:bundle.js --live -- -t babelify",
+    "build": "browserify ./src/app.js -o bundle.js -t babelify --debug"
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
+    "binary-csv": "^0.2.3",
     "d3": "^4.8.0",
     "deck.gl": "^4.0.0",
     "immutable": "^3.8.1",
