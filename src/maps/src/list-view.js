@@ -10,6 +10,12 @@ const layers = [
     'trees',
     'crimes',
     'gdelt',
+    'sidewalk cleanliness',
+    'restaurant inspections',
+    'electricity consumption',
+    '311 requests',
+    'rodent inspection (yuck)',
+    'pollution'
 ]
 
 const exposition = {
