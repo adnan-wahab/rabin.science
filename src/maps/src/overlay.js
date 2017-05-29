@@ -1,3 +1,5 @@
+
+
 import React, {Component} from 'react';
 import DeckGL, {ScatterplotLayer} from 'deck.gl';
 
@@ -40,15 +42,14 @@ let plot = (data, name) => {
 }
 
 let lines = (data) => {
-    console.log('lines', data)
     return new LineLayer({
         id: 'flight-paths',
         data: data,
-        strokeWidth: 5,
+        strokeWidth: 1    ,
         fp64: false,
-        getSourcePosition: d => d.start,
-        getTargetPosition: d => d.end,
-        getColor: () => [255,0,0,255],
+        getSourcePosition: d => d[0],
+        getTargetPosition: d => d[1],
+        getColor: () => [255,0,0,100]
     })
 }
 
@@ -56,14 +57,13 @@ let lines = (data) => {
 export default class Overlay extends Component {
     render() {
         const {viewport, width, height, data} = this.props;
-        if (! data) return (<div>NO DATA UH OH</div>);
+        if (! data) return null;
         /* const layers=  [
          *     plot(data, 'trees'), plot(data, 'crimes')
          * ];*/
 
         const layers = [
-            lines(data.bikes) 
-
+            lines(data.bike_trips)
         ]
 
         return (

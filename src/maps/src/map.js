@@ -1,7 +1,3 @@
-// {...viewport}
-// width={width}
-// height={height}
-// layers={layers}
 import React, {Component} from 'react';
 import MapGL from 'react-map-gl';
 import DeckGL, {ScatterplotLayer} from 'deck.gl';
@@ -11,65 +7,78 @@ import Overlay from './overlay.js';
 
 import {text as request} from 'd3-request';
 import {csv as requestCSV} from 'd3-request';
+import {json as requestJSON} from 'd3-request';
 
 // Set your mapbox token here
 var MAPBOX_TOKEN = 'pk.eyJ1IjoiYXdhaGFiIiwiYSI6ImNpenExZHF0ZTAxMXYzMm40cWRxZXY1d3IifQ.TdYuekJQSG1eh6dDpywTxQ';
 
-let txt = 'gowalla.tsv'
-let head  = 'head.csv'
+let done = (results) => {
+  let beanList = results[0].stationBeanList
+  let stations = {}
+  for (let bean of beanList) stations[bean.id] = bean
 
-d3.request('data/weather.bin')
-  .responseType('arraybuffer')
-  .on('load', function (req) { parseData(req.response) })
-  .on('error', reject)
-  .get();
+  let shadow= [ 40.75668720603179, -73.98257732391357 ]
 
-function parseData(buffer) {
-    var bufferData = new Uint16Array(buffer);
-    var hours = 72;
-    var components = 3;
-    var l = bufferData.length / (hours * components);
-    var hourlyData = Array(hours);
+  let trips = results[1].map((row, n) => {
+    let source = stations[row['start station id']],
+        target = stations[row['end station id']]
 
-    for (var i = 0; i < hours; ++i) {
-      hourlyData[i] = createHourlyData(bufferData, i, l, hours, components);
-    }
+        //return [shit[n].start, shit[n].end]
 
-  return hourlyData;
-}
-
-
-function createHourlyData(bufferData, i, l, hours, components) {
-  var len = bufferData.length;
-  var array = Array(l);
-
-  for (var j = i * components, count = 0; count < l; j += hours * components) {
-    array[count++] = new Float32Array([bufferData[j], bufferData[j + 1], bufferData[j + 2]]);
-  }
-
-  return array;
-}
-
-
-function reject(error) {
-  console.log('oh butt')
-}
-
-
-let requestWrap = (file, processor, self) => {
-  requestCSV(`data/${file}/${file}.csv`, (error, response) => {
-    let result = {};
-    result[file] = processor(response)
-
-    if (error)
-      throw new Error(error)
-    else
-      self.setState((prev) => _.extend(prev.data, result))
+    return [
+      [source ? source.longitude : shadow[1],
+       source ? source.latitude : shadow[0]
+      ],
+      [target ? target.longitude : shadow[1],
+       target ? target.latitude : shadow[0]
+      ]
+    ]
   })
+
+  return {
+    stations: stations,
+    bike_trips: trips
+  }
+}
+
+function loadData() {
+  return Promise.all([loadStations(), loadTrips()]).then(done);
 }
 
 
-let fetchers = {
+let loadStations = () => {
+  return new Promise((resolve, reject) => {
+    requestJSON('data/citi_bike/stations.json')
+      .on('load', resolve)
+      .on('error', reject)
+      .get();
+  });
+}
+let loadTrips = () => {
+  return new Promise((resolve, reject) => {
+    requestCSV('data/citi_bike/trips.csv')
+      .on('load', resolve)
+      .on('error', reject)
+      .get();
+  });
+}
+
+// let requestWrap = (file, processor, self) => {
+//   requestCSV(`data/${file}/${file}.csv`, (error, response) => {
+//     let result = {};
+//     result[file] = processor(response)
+
+//     if (error)
+//       throw new Error(error)
+//     else
+//       self.setState((prev) => _.extend(prev.data, result))
+//   })
+// }
+
+
+
+
+let processors = {
   trees: (response) => {
     var cat = {
       Good: 1,
@@ -99,15 +108,12 @@ let fetchers = {
                        );
   },
   bikes: (response) => {
-    console.log(response)
     return response.map((d) => [(+ d.Longitude),
                                 (+ d.Latitude)
                                ]
                        );
   }
 }
-
-console.log(1)
 
 class Map extends Component {
   constructor(props) {
@@ -128,11 +134,9 @@ class Map extends Component {
 
     let view = this
 
-    // for (var key in fetchers) {
-    //   requestWrap(key, fetchers[key], view)
-    // }
-
-    requestWrap('bikes', fetchers['bikes'], view)
+    loadData().then((data) => {
+      this.setState({data})
+    })
   }
 
     _resize() {
