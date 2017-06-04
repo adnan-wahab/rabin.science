@@ -12,22 +12,25 @@ import {json as requestJSON} from 'd3-request';
 var MAPBOX_TOKEN = 'pk.eyJ1IjoiYXdhaGFiIiwiYSI6ImNpenExZHF0ZTAxMXYzMm40cWRxZXY1d3IifQ.TdYuekJQSG1eh6dDpywTxQ';
 
 
-
 let done = (results) => {
   let data = {}
 
-  data.trees = results[0]
-  data.crimes = results[1]
+    data.trees = results[0]
+    data.crimes = results[1]
+    data.streetRatings = results[2]
 
-  processors.trees(data)
-  processors.crimes(data)
+    processors.trees(data)
+    processors.crimes(data)
+    processors.streetRatings(data)
 
-  return data
+    return data
 }
 function loadData() {
-  return Promise.all([load('/data/trees/trees.csv'),
-                      load('/data/crimes/crimes.csv')
-                     ])
+    return Promise.all([load('data/trees/trees.csv'),
+                        load('data/crimes/crimes.csv'),
+                        load('data/street_ratings.json'),
+                        load('data/street_ratings.json'),
+    ])
     .then(done);
 }
 
@@ -45,6 +48,9 @@ let load = (url) => {
 
 
 let processors = {
+    streetRatings: (data)=> {
+        //data.streetRatings = 
+    },
   trees: (data) => {
     var cat = {
       Good: 1,
@@ -105,11 +111,20 @@ class Map extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+      let nyc = {
+          longitude: -73.91922208269459,
+          latitude: 40.72185277744134
+      }
+      let vancouver = {longitude: -123, latitude: 49.24}
+
+      this.state = {
       data: {},
       viewport: {
-        longitude: -73.91922208269459,
-        latitude: 40.72185277744134,
+          longitude: -73.91922208269459,
+          latitude: 40.72185277744134,
+
+          /* longitude: -123,
+           * latitude: 49.24,*/
         zoom: 11.502812637593744,
         pitch: 0,
         bearing: 0,
@@ -121,8 +136,7 @@ class Map extends Component {
     let view = this
 
     loadData().then((data) => {
-      console.log(data)
-      this.setState({data: data})
+      this.setState({data })
     })
   }
 
@@ -145,8 +159,9 @@ class Map extends Component {
     }
 
     render() {
-      const {viewport, data} = this.state;
+      const {viewport, data, selectedIndex} = this.state;
 
+        
       return (
         <MapGL
           {...viewport}
@@ -159,7 +174,8 @@ class Map extends Component {
             data={data}
             radius={30}
             width={960}
-            height={500}
+          height={500}
+          selectedIndex={this.props.selectedIndex}
           />
         </MapGL>
         );

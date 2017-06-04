@@ -15,7 +15,7 @@ body {margin: 0; padding: 0; overflow: hidden;}
     color: white;
 }
 
-.legend ul {
+ul.legend {
     list-style: none;
 }
 
@@ -26,7 +26,7 @@ body {margin: 0; padding: 0; overflow: hidden;}
 
 body {
     font-family: "Helvetica Neue", Helvetica, sans-serif !important;
-    font-size: 11px;
+    font-size: 16px;
     padding: 0;
     margin: 0;
     color: #fff;
@@ -34,8 +34,12 @@ body {
     overflow: hidden;
 }
 
+li.selected a{
+    color: pink;
+}
+
 a, a:visited {
-    color: #08f;
+    color: white;
     text-decoration: none;
     font-style: italic;
 }
